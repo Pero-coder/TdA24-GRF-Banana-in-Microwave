@@ -1,10 +1,12 @@
 from openai import OpenAI
 from dotenv import load_dotenv
+from flask import Flask
 import os
 
 load_dotenv()
 
-client = OpenAI()
+app = Flask(__name__)
+
 client = OpenAI(
   api_key=os.environ.get("OPENAI_API_KEY")
 )
@@ -17,5 +19,10 @@ completion = client.chat.completions.create(
     ]
 )
 
-# outputs only AI response message
-print(completion.choices[0].message.content)
+@app.route('/')
+def hello_world():
+    return completion.choices[0].message.content
+
+
+if __name__ == '__main__':
+    app.run()
