@@ -14,8 +14,8 @@ client = OpenAI(
 completion = client.chat.completions.create(
     model="gpt-3.5-turbo",
     messages=[
-        {"role": "system", "content": "Jsi učitel, který vysvětluje python."},
-        {"role": "user", "content": "Co je knihovna flask?"}
+        {"role": "system", "content": "Učitel Masarykovy univerzity v Brně"},
+        {"role": "user", "content": "Řekněte mi základní informace o škole"}
     ]
 )
 
