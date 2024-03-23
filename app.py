@@ -12,6 +12,18 @@ from bson import json_util
 import models
 import utils
 
+from flask import Flask, render_template
+from jinja2 import Environment, PackageLoader, select_autoescape
+
+app = Flask(__name__)
+
+env = Environment(
+    loader=PackageLoader('yourapplication', 'templates'),
+    autoescape=select_autoescape(['html', 'xml']),
+    extensions=['jinja2.ext.loopcontrols']
+)
+env.filters['zip'] = zip
+
 
 load_dotenv()
 
@@ -54,9 +66,7 @@ def homepage():
     found_activities: List[Dict[str, Any]] = list(activities_db.find())
     ai_generated_descriptions: List[Dict[str, Any]] = list(ai_summaries_db.find())
 
-    activities_and_descriptions = zip(found_activities, ai_generated_descriptions)
-
-    return render_template("homepage.html", activities=found_activities, activities_and_descriptions=activities_and_descriptions)
+    return render_template("homepage.html", activities=found_activities, descriptions=ai_generated_descriptions)
 
 @app.route("/aktivita")
 def activity_empty():
