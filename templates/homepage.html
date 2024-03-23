@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amos - aktivity</title>
+</head>
+
+<header>
+    <p>Amos</p>
+    <button>Login</button>
+</header>
+
+<body>
+    
+    {% for activity in activities %}
+        <h2>{{ loop.index }}. {{activity.activityName}}</h2>
+        <p>{{activity.description}}</p>
+        <hr>
+        <br>
+    {% endfor %}
+
+</body>
+</html>

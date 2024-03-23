@@ -1,6 +1,6 @@
 from openai import OpenAI
 from dotenv import load_dotenv
-from flask import Flask, request
+from flask import Flask, request, render_template
 from pymongo.mongo_client import MongoClient
 from datetime import timedelta
 import secrets
@@ -32,7 +32,7 @@ openai_client = OpenAI(
 )
 
 
-@app.route('/')
+@app.route('/hello-world')
 def hello_world():
 
     # request to chatgpt API
@@ -46,6 +46,11 @@ def hello_world():
 
     return completion.choices[0].message.content
 
+@app.route('/')
+def homepage():
+    found_activities: List[Dict[str, Any]] = list(activities_db.find())
+    return render_template("homepage.html", activities=found_activities)
+
 
 # APIs
 
@@ -58,7 +63,7 @@ def create_activity():
         new_activity_object = models.ActivityModel(**request_json)
         success = utils.add_activity_to_db(new_activity_object)
 
-        if success:
+        if not success:
             return {"code": 400, "message": "Activity has wrong format"}, 400
 
         else:
@@ -92,4 +97,6 @@ def delete_activity(activity_uuid: str):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.jinja_env.auto_reload = True
+    app.config['TEMPLATES_AUTO_RELOAD'] = True
+    app.run(debug=True, host='0.0.0.0')
