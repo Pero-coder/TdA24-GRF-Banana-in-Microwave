@@ -18,6 +18,9 @@
 
             var searchButton = document.getElementById("searchButton");
             searchButton.style.display = "none";  // Hide the button
+
+            var searchField = document.getElementById("searchField");
+            searchField.style.display = "none"; // hide the search field
         
             fetch('/api/search_ai', {
                 method: 'POST',
@@ -46,9 +49,6 @@
                     console.error('Error:', error);        
             });
 
-            searchButton.addEventListener('click', AiSearchActivities);
-
-
             }
     </script>
 </head>
@@ -70,7 +70,7 @@
     </div>
 
     <div style="display: flex; justify-content: center; margin: 20px 0;">
-        <input id="searchField" type="text" value="{{last_search}}" placeholder="Zadejte klíčová slova..." style="width: 50%; height: 40px; padding: 10px;">
+        <input id="searchField" type="text" value="{{last_search}}" placeholder="Zadejte klíčová slova..." style="width: 50%; height: 40px; padding: 10px;" onkeydown="if (event.key === 'Enter') AiSearchActivities()">
         <button id="searchButton" onclick="AiSearchActivities()">Hledat</button>
     </div>
 
