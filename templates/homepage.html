@@ -5,8 +5,48 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}">
-
     <title>Amos - aktivity</title>
+
+    <script>
+        function AiSearchActivities() {
+            var searchField = document.getElementById("searchField");
+            var searchText = searchField.value.trim();
+
+            if (searchText === ""){
+                return;
+            }
+
+            var searchButton = document.getElementById("searchButton");
+            searchButton.style.display = "none";  // Hide the button
+        
+            fetch('/api/search_ai', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                    body: JSON.stringify({ prompt: searchText }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    var uuids = data.uuids;
+                    var query = "?";
+
+                    for (var i = 0; i < uuids.length; i++) {
+                        var uuid = uuids[i];
+                        query += "uuid=" + uuid + "&";
+                    }
+                    
+                    window.location.href = "/" + query;  // Redirect to the new URL
+                })
+                .catch((error) => {
+                    console.error('Error:', error);        
+            });
+
+            searchButton.addEventListener('click', AiSearchActivities);
+
+
+            }
+    </script>
 </head>
 
 <body>
@@ -29,7 +69,8 @@
     </div>
 
     <div style="display: flex; justify-content: center; margin: 20px 0;">
-        <input type="text" placeholder="Hledat..." style="width: 50%; padding: 10px;">
+        <input id="searchField" type="text" placeholder="Zadejte klíčová slova..." style="width: 50%; padding: 10px;">
+        <button id="searchButton" onclick="AiSearchActivities()">Hledat</button>
     </div>
 
     <div style="padding: 15px;">

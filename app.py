@@ -51,8 +51,15 @@ def hello_world():
 
 @app.route('/', methods=["GET"])
 def homepage():
-    found_activities: List[Dict[str, Any]] = list(activities_db.find())
-    ai_generated_descriptions: List[Dict[str, Any]] = list(ai_summaries_db.find())
+    uuids = request.args.getlist('uuid')
+
+    if uuids:
+        found_activities = list(activities_db.find({"_id": {"$in": uuids}}))
+        ai_generated_descriptions = list(ai_summaries_db.find({"_id": {"$in": uuids}}))
+    else:
+        found_activities = list(activities_db.find())
+        ai_generated_descriptions = list(ai_summaries_db.find())
+
 
     activities_and_descriptions = zip(found_activities, ai_generated_descriptions)
 
