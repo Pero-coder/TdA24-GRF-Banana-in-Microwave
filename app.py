@@ -1,6 +1,6 @@
 from openai import OpenAI
 from dotenv import load_dotenv
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, redirect, session
 from pymongo.mongo_client import MongoClient
 from datetime import timedelta
 import secrets
@@ -46,10 +46,67 @@ def hello_world():
 
     return completion.choices[0].message.content
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def homepage():
     found_activities: List[Dict[str, Any]] = list(activities_db.find())
     return render_template("homepage.html", activities=found_activities)
+
+@app.route("/aktivita")
+def activity_empty():
+    return redirect('/')
+
+# Login page
+@app.route("/login", methods=["GET", "POST"])
+def lecturer_login():
+
+    if bool(session.get("logged_in")):
+        return redirect("/admin-zone")
+
+    if request.method == "GET":
+        return render_template("login_page.html")
+
+    elif request.method == "POST" and False:
+
+        request_json: dict = request.get_json() # {"username": "", "password": ""}
+        
+        username: str|None = request_json.get("username")
+        password: str|None = request_json.get("password")
+
+        if username is None or password is None:
+            return {"code": 401, "message": "Wrong username or password"}, 401
+        
+        username = username.strip()
+        password = password.strip()
+        
+        if username == '' or password == '':
+            return {"code": 401, "message": "Wrong username or password"}, 401
+
+        lecturer_credentials = credentials.find_one({"username": {"$eq": username}})
+        
+        if not bool(lecturer_credentials):
+            return {"code": 401, "message": "Wrong username or password"}, 401
+        
+        hashed_password = lecturer_credentials.get("hashed_password")
+
+        if not utils.check_hash_bcrypt(password, hashed_password):
+            return {"code": 401, "message": "Wrong username or password"}, 401
+
+        lecturer_uuid = lecturer_credentials.get("_id")
+        session["logged_in"] = True
+        session["lecturer_uuid"] = lecturer_uuid
+
+        return redirect('/lecturer-zone')
+
+    return {"code": 405, "message": "Method not allowed"}, 405
+
+
+@app.route("/logout")
+def logout_lecturer():
+    session.clear() # delete cookies
+    return redirect('/login')
+
+
+
 
 
 # APIs
@@ -94,6 +151,8 @@ def delete_activity(activity_uuid: str):
         return {"code": 404, "message": "Activity not found"}, 404
     else:
         return {"code": 200, "message": "Activity deleted successfully"}, 200
+
+
 
 
 if __name__ == '__main__':
