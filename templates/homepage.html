@@ -59,17 +59,14 @@
 
         <a href="/"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="logo"></a>
 
-        <a style="float: right; min-height: 40px; min-width: 75px;" href="/login">
-            <div style="background-color: burlywood;">
-                <p style="text-align: center;">Login</p>
-            </div>
-        </a>
-
-        <a style="float: right; min-height: 40px; min-width: 75px; margin-right: 10px;" href="/tvorba-aktivity">
-            <div style="background-color: burlywood;">
-                <p style="text-align: center;">Přidat aktivitu</p>
-            </div>
-        </a>
+        <div>
+            <a class="link-button" href="/tvorba-aktivity">
+                <p>Přidat aktivitu</p>
+            </a>
+            <a class="link-button" href="/login">
+                <p>Login</p>
+            </a>
+        </div>
     </div>
 
     <div style="display: flex; justify-content: center; margin: 20px 0;">
