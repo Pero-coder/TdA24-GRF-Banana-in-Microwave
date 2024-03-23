@@ -25,6 +25,8 @@ jobs:
           outputs: type=docker,dest=/tmp/tda-flask.tar
           build-args: |
             OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+            MONGO_USERNAME=${{ secrets.MONGO_USERNAME }}
+            MONGO_PWD=${{ secrets.MONGO_PWD }}
 
       - name: Upload to TdA
         uses: Tour-de-App/upload-app@tda-24
