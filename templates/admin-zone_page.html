@@ -27,7 +27,7 @@
         <h2>Aktivity ke schválení ({{activities_count}}):</h2>
         <div style="padding: 15px;">
             {% for activity in activities %}
-                <a href="."}>
+                <a href="/admin-zone/schvaleni/{{activity.uuid}}"}>
                     <h2>{{activity.activityName}}</h2>
                 </a>
                 <p>{{activity.description}}</p>

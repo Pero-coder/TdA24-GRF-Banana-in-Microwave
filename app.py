@@ -147,6 +147,23 @@ def admin_page():
     return render_template("admin-zone_page.html", activities_count=str(len(all_activities_to_approve)), activities=all_activities_to_approve)
 
 
+@app.route('/admin-zone/schvaleni/<string:activity_uuid>', methods=["GET"])
+def approve_activity_page(activity_uuid: str):
+
+    if not bool(session.get("logged_in")):
+        return redirect("/login")
+    
+    found_activity = activities_to_approve_db.find_one({"_id": {"$eq": activity_uuid}})
+
+    if found_activity is None:
+        return "Aktivita neexistuje!", 404
+
+    activity_object = models.ActivityModel(**found_activity)
+
+    return render_template("approval_activity_page.html", **activity_object.model_dump())
+
+
+
 @app.route('/tvorba-aktivity', methods=["GET"])
 def create_activity_page():
 
