@@ -214,27 +214,64 @@ def get_activity(activity_uuid: str):
 @app.route("/api/activity/<string:activity_uuid>", methods=["DELETE"])
 def delete_activity(activity_uuid: str):
     
-    utils.delete_ai_description(activity_uuid)
-    deleted = utils.delete_activity(activity_uuid)
+    if request.method == "DELETE":
+        utils.delete_ai_description(activity_uuid)
+        deleted = utils.delete_activity(activity_uuid)
 
-    if not deleted:
-        return {"code": 404, "message": "Activity not found"}, 404
+        if not deleted:
+            return {"code": 404, "message": "Activity not found"}, 404
+        else:
+            return {"code": 200, "message": "Activity deleted successfully"}, 200
+
     else:
-        return {"code": 200, "message": "Activity deleted successfully"}, 200
-
-
+        return {"code": 405, "message": "Method not allowed"}, 405
 
 @app.route("/api/search_ai", methods=["POST"])
 def search_activity():
-    request_json: dict = request.get_json() # {"prompt": ""}
+
+    if request.method == "POST":
+        request_json: dict = request.get_json() # {"prompt": ""}
+        
+        search_text: str|None = request_json.get("prompt")
+
+        if search_text is None or search_text == "":
+            return {"code": 400, "message": "Invalid prompt"}, 400
+
+
+        return {"uuids": utils.ai_search_activities(search_text)}, 200
     
-    search_text: str|None = request_json.get("prompt")
-
-    if search_text is None or search_text == "":
-        return {"code": 400, "message": "Invalid prompt"}, 400
+    else:
+        return {"code": 405, "message": "Method not allowed"}, 405
 
 
-    return {"uuids": utils.ai_search_activities(search_text)}, 200
+@app.route("/api/approve_activity/<string:activity_uuid>", methods=["POST"])
+def approve_activity(activity_uuid: str):
+
+    if request.method == 'POST':
+        success = utils.approve_activity(activity_uuid)
+
+        if not success:
+            return {"code": 404, "message": "Activity not found"}, 404
+        else:
+            return {"code": 200, "message": "Activity approved successfully"}, 200
+    
+    else:
+        return {"code": 405, "message": "Method not allowed"}, 405
+
+
+@app.route("/api/reject_activity/<string:activity_uuid>", methods=["POST"])
+def reject_activity(activity_uuid: str):
+
+    if request.method == "POST":
+        success = utils.reject_activity(activity_uuid)
+
+        if not success:
+            return {"code": 404, "message": "Activity not found"}, 404
+        else:
+            return {"code": 200, "message": "Activity rejected successfully"}, 200
+    
+    else:
+        return {"code": 405, "message": "Method not allowed"}, 405
 
 
 if __name__ == '__main__':

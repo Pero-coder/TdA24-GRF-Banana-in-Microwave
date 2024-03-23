@@ -143,3 +143,13 @@ def approve_activity(activity_uuid: str) -> bool:
     except Exception as e:
         print(e)
         return False
+    
+def reject_activity(activity_uuid: str) -> bool:
+    try:
+        activities_to_approve_db.delete_one({"_id": activity_uuid})
+
+        return True
+
+    except Exception as e:
+        print(e)
+        return False

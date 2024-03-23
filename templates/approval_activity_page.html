@@ -5,6 +5,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='activity.css')}}">
     <title>Aktivita</title>
+
+    <script>
+        function ApproveActivity(){
+            let activity_uuid = document.getElementById("activity_uuid").innerText;
+
+            fetch("/api/approve_activity/" + activity_uuid, {
+                method: "POST",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    window.location.href = "/admin-zone";
+                } else {
+                    alert("Chyba: ", data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
+        function RejectActivity(){
+            let activity_uuid = document.getElementById("activity_uuid").innerText;
+
+            fetch("/api/reject_activity/" + activity_uuid, {
+                method: "POST",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.code === 200) {
+                    window.location.href = "/admin-zone";
+                } else {
+                    alert("Chyba: ", data.message);
+                }
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+
 </head>
 
 <body>
@@ -12,8 +53,8 @@
         <a href="/"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="logo"></a>
         
         <div style="float: right;">
-            <button>Schválit</button>
-            <button>Zamítnout</button>
+            <button onclick="ApproveActivity()">Schválit</button>
+            <button onclick="RejectActivity()">Zamítnout</button>
         </div>
     </div>
 
@@ -124,5 +165,6 @@
         </div>
     </div>
 
+    <p style="opacity: 0;" id="activity_uuid">{{uuid}}</p>
 </body>
 </html>
