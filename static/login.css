@@ -1,0 +1,76 @@
+@import 'https://fonts.googleapis.com/css?family=Lalezar';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+body {
+    background-color: #fafafa;
+    color: #00384D;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Lalezar";
+}
+
+p {
+    font-family: "Open Sans";
+}
+
+.navbar {
+    background-color: #ffffff;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 50px;
+    max-width: 900px;
+    max-height: 600px;
+    width: auto;
+    height: auto;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+.footer {
+    padding: 98px;
+}
+
+input {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    font-size: 16px;
+}
+
+input[type="submit"] {
+    background-color: #00384D;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #74C7D3;
+}

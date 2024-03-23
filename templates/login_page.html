@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{url_for('static', filename='favicon.svg')}}" type="image/svg+xml">
+    <link rel="stylesheet" href="{{url_for('static', filename='login.css')}}">
+    <title>Login - Lektorská zóna</title>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/"><img class="logo" src="{{url_for('static', filename='TeacherDigitalAgency_LOGO_colour-black.svg')}}" alt="logo"></a>
+    </div>
+
+    <div class="login-form">
+        <form id="loginForm">
+            <div>
+                <p>
+                    <label for="username">Uživatelské jméno:</label><br>
+                    <input type="text" id="username" name="username" required><br>
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <label for="password">Heslo:</label><br>
+                    <input type="password" id="password" name="password" required><br>
+                </p>
+            </div>
+
+            <div>
+                <p>
+                    <input type="submit" value="Přihlásit se">
+                </p>
+            </div>
+        </form>
+    </div>
+    <div class="footer"></div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+
+        fetch('/lecturer-login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            }),
+            redirect: 'follow',
+        })
+        .then(response => {
+            if (!response.ok) {
+                alert("Špatné jméno nebo heslo")
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response;
+        })
+        .then(data => {
+            if (data.redirected) {
+                window.location.href = data.url;
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    });
+    </script>
+    
+</body>
+</html>
