@@ -56,7 +56,7 @@ def homepage():
 
     activities_and_descriptions = zip(found_activities, ai_generated_descriptions)
 
-    return render_template("homepage.html", activities=found_activities, activities_and_descriptions=activities_and_descriptions)
+    return render_template("homepage.html", activities_and_descriptions=activities_and_descriptions)
 
 @app.route("/aktivita")
 def activity_empty():

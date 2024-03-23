@@ -114,6 +114,12 @@ def approve_activity(activity_uuid: str) -> bool:
             activities_db.insert_one(activity_to_approve)
             activities_to_approve_db.delete_one({"_id": activity_uuid})
 
+            new_activity_object = models.ActivityModel(**activity_to_approve)
+        
+            ai_generated_description = create_ai_description(new_activity_object)
+            success_ai_generated_description = add_ai_generated_description(new_activity_object.uuid, ai_generated_description)
+
+
             return True
         else:
             print(f"No activity found with uuid: {activity_uuid}")
