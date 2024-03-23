@@ -38,11 +38,11 @@ def hash_password_bcrypt(password: str) -> str:
 def check_hash_bcrypt(password: str, hashed: str) -> bool:
     return bcrypt.checkpw(password.encode('utf-8'), hashed.encode('utf-8'))
 
-def add_user_credentials_to_db(uuid: str, username: str, password: str) -> bool:
+def add_user_credentials_to_db(username: str, password: str) -> bool:
     hashed_password = hash_password_bcrypt(password)
     try:
         credentials_db.create_index("username", unique=True)
-        credentials_db.insert_one({"_id": uuid, "username": username, "hashed_password": hashed_password})
+        credentials_db.insert_one({"username": username, "hashed_password": hashed_password})
         return True
     
     except pymongo.errors.DuplicateKeyError:

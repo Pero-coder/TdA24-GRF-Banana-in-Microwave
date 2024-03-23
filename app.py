@@ -65,10 +65,11 @@ def lecturer_login():
     if request.method == "GET":
         return render_template("login_page.html")
 
-    elif request.method == "POST" and False:
+    elif request.method == "POST":
+
 
         request_json: dict = request.get_json() # {"username": "", "password": ""}
-        
+
         username: str|None = request_json.get("username")
         password: str|None = request_json.get("password")
 
@@ -81,21 +82,20 @@ def lecturer_login():
         if username == '' or password == '':
             return {"code": 401, "message": "Wrong username or password"}, 401
 
-        lecturer_credentials = credentials.find_one({"username": {"$eq": username}})
-        
-        if not bool(lecturer_credentials):
+        admin_credentials = credentials_db.find_one({"username": {"$eq": username}})
+
+        if not bool(admin_credentials):
             return {"code": 401, "message": "Wrong username or password"}, 401
         
-        hashed_password = lecturer_credentials.get("hashed_password")
+        hashed_password = admin_credentials.get("hashed_password")
+
 
         if not utils.check_hash_bcrypt(password, hashed_password):
             return {"code": 401, "message": "Wrong username or password"}, 401
 
-        lecturer_uuid = lecturer_credentials.get("_id")
         session["logged_in"] = True
-        session["lecturer_uuid"] = lecturer_uuid
 
-        return redirect('/lecturer-zone')
+        return redirect('/admin-zone')
 
     return {"code": 405, "message": "Method not allowed"}, 405
 
@@ -106,7 +106,13 @@ def logout_lecturer():
     return redirect('/login')
 
 
+@app.route('/admin-zone', methods=["GET"])
+def admin_page():
 
+    if not bool(session.get("logged_in")):
+        return redirect("/login")
+
+    return render_template("admin-zone_page.html")
 
 
 # APIs
