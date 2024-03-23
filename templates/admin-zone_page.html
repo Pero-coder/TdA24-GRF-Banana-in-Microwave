@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='admin.css')}}">
+    <title>Admin panel</title>
+</head>
+<body>
+    <div class="navbar">
+        <a href="/"><img class="logo" src="{{url_for('static', filename='TeacherDigitalAgency_LOGO_colour-black.svg')}}" alt="logo"></a>
+    
+        <a style="float: right; min-height: 40px; min-width: 75px;" href="/logout">
+            <div style="background-color: red;">
+                <p style="text-align: center;">Odhlásit se</p>
+            </div>
+        </a>
+    </div>
+
+    <div style="padding: 15px;">
+        <h1>Vítejte v admin panelu</h1>
+        <hr>
+        <p style="background-color: greenyellow; padding: 10px;">Přihlášení proběhlo úspěšně</p>
+    </div>
+
+</body>
+</html>
