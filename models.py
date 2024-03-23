@@ -28,7 +28,7 @@ class HomePreparation(BaseModel):
     warn: str
     note: str
 
-class NewActivity(BaseModel):
+class ActivityModel(BaseModel):
     uuid: str
     activityName: str
     description: str
