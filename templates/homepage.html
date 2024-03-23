@@ -33,7 +33,7 @@
     </div>
 
     <div style="padding: 15px;">
-        {% for activity, ai_description in zip(activities, descriptions) %}
+        {% for activity, ai_description in activities_and_descriptions %}
             <a href="/aktivita/{{activity.uuid}}">
                 <h2>{{activity.activityName}}</h2>
             </a>
