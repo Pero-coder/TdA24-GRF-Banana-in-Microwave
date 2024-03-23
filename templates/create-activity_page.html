@@ -4,20 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{url_for('static', filename='create-activity.css')}}">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="{{url_for('static', filename='create-acitvity.js')}}"></script>
     <title>Vytvořit novou aktivitu</title>
 </head>
 <body>
+    <div class="navbar">
+        <a href="/"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="logo"></a>
+    </div>
 
-    <a href="/">Zpět</a>
+    <h1>FORMULÁŘ NEFUNGUJE, FUNKČNÍ JE POUZE API</h1>
 
-    <hr style="margin-top: 15px; margin-bottom: 5%;">
-    
     <h2 style="text-decoration: underline; font-size: 30px;">Nová aktivita:</h2>
 
-    <form>
+    <form id="myForm">
         <div class="form-group">
             <label for="activityName">Název aktivity:</label>
-            <input type="text" id="activityName" name="activityName">
+            <input type="text" id="activityName" name="activityName" required>
         </div>
 
         <hr style="opacity: 0;">
@@ -31,44 +34,50 @@
 
         <div class="form-group">
             <label for="objectives">Cíle:</label>
-            <textarea id="objectives" name="objectives"></textarea>
+            <textarea id="objectives" name="objectives" required></textarea>
         </div>
 
         <hr style="opacity: 0;">
 
         <div class="form-group">
             <label for="classStructure">Typ aktivity:</label>
-            <select id="classStructure" name="classStructure">
-                <option value="null">Vyberte</option>
-                <option value="Group">Skupinová</option>
-                <option value="Individual">Samostatná</option>
-            </select>
+            <input type="checkbox" name="classStructure" value="Individual" id="individual">
+            <label for="individual">Samostatná</label>
+
+            <input type="checkbox" name="classStructure" value="Group" id="group">
+            <label for="group">Skupinová</label>
+
+            <input type="checkbox" name="classStructure" value="All" id="both">
+            <label for="both">Obojí</label>
         </div>
 
         <hr style="opacity: 0;">
 
         <div class="form-group">
             <label for="lengthMin">Minimální délka (minuty):</label>
-            <input type="number" id="lengthMin" name="lengthMin" placeholder="Např. 30min">
+            <input type="number" id="lengthMin" name="lengthMin" placeholder="Např. 30" required>
         </div>
 
         <hr style="opacity: 0;">
 
         <div class="form-group">
             <label for="lengthMax">Maximální délka (minuty):</label>
-            <input type="number" id="lengthMax" name="lengthMax" placeholder="Např. 60min">
+            <input type="number" id="lengthMax" name="lengthMax" placeholder="Např. 60" required>
         </div>
 
         <hr style="opacity: 0;">
 
         <div class="form-group">
             <label for="edLevel">Úroveň obtížnosti:</label>
-            <select id="edLevel" name="edLevel">
-                <option value="null">Vyberte</option>
-                <option value="primarySchool">1. stupeň základní školy</option>
-                <option value="secondarySchool">2. stupeň základní školy</option>
-                <option value="highSchool">Střední škola</option>
-            </select>
+
+            <input type="checkbox" name="edLevel" value="primarySchool" id="primarySchool">
+            <label for="primarySchool">1. stupeň základní školy</label>
+
+            <input type="checkbox" name="edLevel" value="secondarySchool" id="secondarySchool">
+            <label for="secondarySchool">2. stupeň základní školy</label>
+
+            <input type="checkbox" name="edLevel" value="highSchool" id="highSchool">
+            <label for="highSchool">Střední škola</label>
         </div>
 
         <hr style="opacity: 0;">
@@ -101,7 +110,7 @@
         <label for="instructions">Instrukce:</label>
         <div class="form-group" style="border: 1px solid black; padding: 10px; margin: 5px;">
             <label for="instructionsTitle">Hlavní:</label>
-            <textarea id="instructionsTitle" name="instructionsTitle"></textarea>
+            <textarea id="instructionsTitle" name="instructionsTitle" required></textarea>
 
             <hr style="opacity: 0;">
 

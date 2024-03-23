@@ -9,6 +9,25 @@ p {
     font-family: "Open Sans";
 }
 
+body {
+    background-color: #fafafa;
+    color: #00384D;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    margin: 0;
+}
+
+.navbar {
+    background-color: #ffffff;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 .form-group {
     display: flex;
     flex-direction: column;
@@ -16,4 +35,23 @@ p {
 }
 .form-group label {
     margin-bottom: 0.5em;
+}
+
+input[type="submit"] {
+    background-color: #00384D;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #74C7D3;
 }
