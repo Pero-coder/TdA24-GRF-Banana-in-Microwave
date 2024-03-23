@@ -20,6 +20,12 @@
                 <p style="text-align: center;">Login</p>
             </div>
         </a>
+
+        <a style="float: right; min-height: 40px; min-width: 75px; margin-right: 10px;" href="/tvorba-aktivity">
+            <div style="background-color: burlywood;">
+                <p style="text-align: center;">Přidat aktivitu</p>
+            </div>
+        </a>
     </div>
 
     <div style="display: flex; justify-content: center; margin: 20px 0;">
@@ -27,13 +33,13 @@
     </div>
 
     <div style="padding: 15px;">
-        {% for activity in activities %}
-        <a href="/aktivita/{{activity.uuid}}">
-            <h2>{{ loop.index }}. {{activity.activityName}}</h2>
-        </a>
-        <p>{{activity.description}}</p>
-        <hr>
-        <br>
+        {% for activity, ai_description in activities_and_descriptions %}
+            <a href="/aktivita/{{activity.uuid}}">
+                <h2>{{ loop.index }}. {{activity.activityName}}</h2>
+            </a>
+            <p>{{ai_description.summary}}</p>
+            <hr>
+            <br>
         {% endfor %}
         
     </div>

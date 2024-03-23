@@ -1,4 +1,4 @@
-from app import activities_db, credentials_db
+from app import activities_db, credentials_db, ai_summaries_db, openai_client
 import pymongo
 import bcrypt
 import models
@@ -31,6 +31,10 @@ def delete_activity(activity_uuid: str) -> bool:
     result = activities_db.delete_one({"_id": activity_uuid})
     return result.deleted_count > 0
 
+def delete_ai_description(activity_uuid: str) -> bool:
+    result = ai_summaries_db.delete_one({"_id": activity_uuid})
+    return result.deleted_count > 0
+
 def hash_password_bcrypt(password: str) -> str:
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     return hashed.decode('utf-8')
@@ -57,3 +61,31 @@ def change_user_password_in_db(uuid: str, new_password: str) -> bool:
     
     except pymongo.errors.PyMongoError as e:
         return False
+
+def create_ai_description(activity_object: models.ActivityModel):
+
+    completion = openai_client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli"},
+            {"role": "user", "content": "Potřebuji vygenerovat shrnutí či popisek aktivity, který bude na hlavní stránce a bude ji reprezentovat. Délka musí být 3 věty. Nezahrnuj zde prosím zbytečné informace jako uuid. Klidně informace více zkrášli. Zde je JSON ve kterém najdeš informace o aktivitě: " + activity_object.model_dump_json()} 
+        ]
+    )
+
+    return completion.choices[0].message.content
+
+
+
+def add_ai_generated_description(activity_uuid: str, ai_description: str):
+    try:
+        ai_summaries_db.update_one({"_id": activity_uuid}, {"$set": {"summary": ai_description}}, upsert=True)
+        return True
+    
+    except pymongo.errors.PyMongoError as e:
+        return False
+
+
+def get_ai_generated_description(activity_uuid: str):
+    found_description = ai_summaries_db.find_one({"_id": {"$eq": activity_uuid}})
+
+    return found_description

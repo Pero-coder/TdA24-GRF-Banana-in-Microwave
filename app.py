@@ -25,6 +25,7 @@ app.permanent_session_lifetime = timedelta(hours=4)  # Session expires after 4 h
 db = mongodb_client.project_activities_database
 activities_db = db.activities
 credentials_db = db.credentials
+ai_summaries_db = db.ai_summaries
 
 
 openai_client = OpenAI(
@@ -46,10 +47,15 @@ def hello_world():
 
     return completion.choices[0].message.content
 
+
 @app.route('/', methods=["GET"])
 def homepage():
     found_activities: List[Dict[str, Any]] = list(activities_db.find())
-    return render_template("homepage.html", activities=found_activities)
+    ai_generated_descriptions: List[Dict[str, Any]] = list(ai_summaries_db.find())
+
+    activities_and_descriptions = zip(found_activities, ai_generated_descriptions)
+
+    return render_template("homepage.html", activities=found_activities, activities_and_descriptions=activities_and_descriptions)
 
 @app.route("/aktivita")
 def activity_empty():
@@ -124,10 +130,18 @@ def create_activity():
         request_json = request.get_json()
 
         new_activity_object = models.ActivityModel(**request_json)
-        success = utils.add_activity_to_db(new_activity_object)
+        
+        ai_generated_description = utils.create_ai_description(new_activity_object)
+        success_ai_generated_description = utils.add_ai_generated_description(new_activity_object.uuid, ai_generated_description)
 
-        if not success:
+        success_creation = utils.add_activity_to_db(new_activity_object)
+        
+
+        if not success_creation:
             return {"code": 400, "message": "Activity has wrong format"}, 400
+        
+        elif not success_ai_generated_description:
+            return {"code": 500, "message": "AI failed to create description"}, 500
 
         else:
             return utils.get_specific_activity(new_activity_object.uuid)
@@ -151,6 +165,8 @@ def get_activity(activity_uuid: str):
 
 @app.route("/api/activity/<string:activity_uuid>", methods=["DELETE"])
 def delete_activity(activity_uuid: str):
+    
+    utils.delete_ai_description(activity_uuid)
     deleted = utils.delete_activity(activity_uuid)
 
     if not deleted:
