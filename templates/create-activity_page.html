@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='create-activity.css')}}">
+    <title>Vytvořit novou aktivitu</title>
+</head>
+<body>
+
+    <a href="/">Zpět</a>
+
+    <hr style="margin-top: 15px; margin-bottom: 5%;">
+    
+    <h2 style="text-decoration: underline; font-size: 30px;">Nová aktivita:</h2>
+
+    <form>
+        <div class="form-group">
+            <label for="activityName">Název aktivity:</label>
+            <input type="text" id="activityName" name="activityName">
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="description">Popis aktivity:</label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="objectives">Cíle:</label>
+            <textarea id="objectives" name="objectives"></textarea>
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="classStructure">Typ aktivity:</label>
+            <select id="classStructure" name="classStructure">
+                <option value="null">Vyberte</option>
+                <option value="Group">Skupinová</option>
+                <option value="Individual">Samostatná</option>
+            </select>
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="lengthMin">Minimální délka (minuty):</label>
+            <input type="number" id="lengthMin" name="lengthMin" placeholder="Např. 30min">
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="lengthMax">Maximální délka (minuty):</label>
+            <input type="number" id="lengthMax" name="lengthMax" placeholder="Např. 60min">
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="edLevel">Úroveň obtížnosti:</label>
+            <select id="edLevel" name="edLevel">
+                <option value="null">Vyberte</option>
+                <option value="primarySchool">1. stupeň základní školy</option>
+                <option value="secondarySchool">2. stupeň základní školy</option>
+                <option value="highSchool">Střední škola</option>
+            </select>
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <div class="form-group">
+            <label for="tools">Nástroje:</label>
+            <textarea id="tools" name="tools" placeholder="Notebook, Plyšáček, Energie v láhvi, ..."></textarea>
+        </div>
+
+        <hr style="opacity: 0;">
+
+        <label for="homePreparation">Příprava doma:</label>
+        <div class="form-group" style="border: 1px solid black; padding: 10px; margin: 5px;">
+            <label for="homePreparationTitle">Hlavní:</label>
+            <textarea id="homePreparationTitle" name="homePreparationTitle"></textarea>
+
+            <hr style="opacity: 0;">
+
+            <label for="homePreparationWarn">Varování:</label>
+            <textarea id="homePreparationWarn" name="homePreparationWarn"></textarea>
+
+            <hr style="opacity: 0;">
+
+            <label for="homePreparationNote">Poznámka:</label>
+            <textarea id="homePreparationNote" name="homePreparationNote"></textarea>
+        </div>
+        
+        <hr style="opacity: 0;">
+
+        <label for="instructions">Instrukce:</label>
+        <div class="form-group" style="border: 1px solid black; padding: 10px; margin: 5px;">
+            <label for="instructionsTitle">Hlavní:</label>
+            <textarea id="instructionsTitle" name="instructionsTitle"></textarea>
+
+            <hr style="opacity: 0;">
+
+            <label for="instructionsWarn">Varování:</label>
+            <textarea id="instructionsWarn" name="instructionsWarn"></textarea>
+
+            <hr style="opacity: 0;">
+
+            <label for="instructionsNote">Poznámka:</label>
+            <textarea id="instructionsNote" name="instructionsNote"></textarea>
+        </div>
+
+        <br>
+
+        <label for="agenda">Agenda:</label>
+        <div class="form-group" style="border: 1px solid black; padding: 10px; margin: 5px;">
+            <label for="agendaTitle">Hlavní:</label>
+            <textarea id="agendaTitle" name="agendaTitle"></textarea>
+        
+            <hr style="opacity: 0;">
+        
+            <label for="agendaWarn">Varování:</label>
+            <textarea id="agendaWarn" name="agendaWarn"></textarea>
+        
+            <hr style="opacity: 0;">
+        
+            <label for="agendaNote">Poznámka:</label>
+            <textarea id="agendaNote" name="agendaNote"></textarea>
+        </div>
+
+        <br>
+
+        <div class="form-group">
+            <label for="links">Odkazy:</label>
+            <textarea id="links" name="links" placeholder="Odkazy oddělte novým řádkem"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="gallery">Galerie:</label>
+            <textarea id="gallery" name="gallery" placeholder="Odkazy oddělte novým řádkem"></textarea>
+        </div>
+        <input type="submit" value="Odeslat">
+    </form>
+
+</body>
+</html>

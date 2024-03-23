@@ -89,3 +89,36 @@ def get_ai_generated_description(activity_uuid: str):
     found_description = ai_summaries_db.find_one({"_id": {"$eq": activity_uuid}})
 
     return found_description
+
+def ai_search_activities(search_text: str, search_quantity: int = 15) -> list[str]:
+
+    all_activities = list(activities_db.find())
+
+    completion = openai_client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": f"Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli, který má vybrat {search_quantity} záznamů na základě nejlepší shody z tohoto listu jsonů: {all_activities}. Počet záznamů nemusí být přesně {search_quantity}, pokud se vyloženě nějaké neshodují."},
+            {"role": "user", "content": f"Vypiš pouze uuid záznamů (oddělených čárkou), které se nejvíce hodí pro toto konkrétní hledání: '{search_text}'"}
+        ]
+    )
+
+    return completion.choices[0].message.content
+
+
+
+def approve_activity(activity_uuid: str) -> bool:
+    try:
+        activity_to_approve = activities_to_approve_db.find_one({"_id": {"$eq": activity_uuid}})
+
+        if activity_to_approve is not None:
+            activities_db.insert_one(activity_to_approve)
+            activities_to_approve_db.delete_one({"_id": activity_uuid})
+
+            return True
+        else:
+            print(f"No activity found with uuid: {activity_uuid}")
+            return False
+
+    except Exception as e:
+        print(e)
+        return False

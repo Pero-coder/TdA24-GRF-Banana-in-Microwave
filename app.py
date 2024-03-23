@@ -73,6 +73,10 @@ def aktivita_page(activity_uuid: str):
     return render_template("activity_page.html", raw_json=activity_get[0])
 
 
+@app.route('/tvorba-aktivity', methods=["GET"])
+def create_activity_page():
+    return render_template("create-activity_page.html")
+
 # Login page
 @app.route("/login", methods=["GET", "POST"])
 def lecturer_login():
@@ -184,8 +188,43 @@ def delete_activity(activity_uuid: str):
     else:
         return {"code": 200, "message": "Activity deleted successfully"}, 200
 
+@app.route("/api/search_ai", methods=["POST"])
+def search_activities_ai():
+
+    request_json: dict = request.get_json() # {"prompt": "", "quantity": ""}
+
+    search_text: str|None = request_json.get("prompt")
+    quantity: str|None = request_json.get("quantity")
+
+    if search_text is None:
+        return {"code": 400, "message": "Prompt text is not in json"}, 400
+    
+    search_text = search_text.strip()
+    if search_text == "":
+        return {"code": 400, "message": "Prompt cannot be empty"}, 400
 
 
+    return {"uuids": utils.ai_search_activities(search_text, 15)}, 200
+
+
+# admin api
+@app.route("/api/approve_activity", methods=["POST"])
+def approve_activity_admin():
+    request_json: dict = request.get_json() # {"uuid": ""}
+
+    activity_uuid: str|None = request_json.get("uuid")
+
+    if activity_uuid is None:
+        return {"code": 400, "message": "Not valid uuid"}, 400
+    
+    success = utils.approve_activity(activity_uuid)
+
+    if success:
+        return {"code": 200, "message": "Activity approved"}, 200
+    else:
+        return {"code": 400, "message": "Failed to aprove activity"}, 400
+    
+     
 
 if __name__ == '__main__':
     app.jinja_env.auto_reload = True
