@@ -1,24 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cs">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{{url_for('static', filename='home.css')}}">
+
     <title>Amos - aktivity</title>
 </head>
 
-<header>
-    <p>Amos</p>
-    <button>Login</button>
-</header>
-
 <body>
-    
-    {% for activity in activities %}
-        <h2>{{ loop.index }}. {{activity.activityName}}</h2>
+
+    <div class="navbar">
+
+        <a href="/"><img class="logo" src="{{url_for('static', filename='TeacherDigitalAgency_LOGO_colour-black.svg')}}" alt="logo"></a>
+
+        <a style="float: right; min-height: 40px; min-width: 75px;" href="/login">
+            <div style="background-color: burlywood;">
+                <p style="text-align: center;">Login</p>
+            </div>
+        </a>
+    </div>
+
+    <div style="display: flex; justify-content: center; margin: 20px 0;">
+        <input type="text" placeholder="Hledat..." style="width: 50%; padding: 10px;">
+    </div>
+
+    <div style="padding: 15px;">
+        {% for activity in activities %}
+        <a href="/aktivita/{{activity.uuid}}">
+            <h2>{{ loop.index }}. {{activity.activityName}}</h2>
+        </a>
         <p>{{activity.description}}</p>
         <hr>
         <br>
-    {% endfor %}
-
+        {% endfor %}
+        
+    </div>
 </body>
 </html>

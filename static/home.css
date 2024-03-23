@@ -1,0 +1,49 @@
+@import 'https://fonts.googleapis.com/css?family=Lalezar';
+@import 'https://fonts.googleapis.com/css?family=Open+Sans';
+
+body {
+    background-color: #fafafa;
+    color: #00384D;
+    margin: 0px;
+    padding: 0px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Lalezar";
+}
+
+p {
+    font-family: "Open Sans";
+}
+
+
+.navbar {
+    background-color: #ffffff;
+}
+
+.logo {
+    width: 90px;
+    height: 90px;
+
+    padding: 15px;
+}
+
+
+button {
+    background-color: #00384D;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    margin: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 4px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #74C7D3;
+    cursor: pointer;
+}
