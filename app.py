@@ -128,8 +128,10 @@ def admin_page():
 
     if not bool(session.get("logged_in")):
         return redirect("/login")
+    
+    all_activities_to_approve = list(activities_to_approve_db.find())
 
-    return render_template("admin-zone_page.html")
+    return render_template("admin-zone_page.html", activities_count=str(len(all_activities_to_approve)), activities=all_activities_to_approve)
 
 
 @app.route('/tvorba-aktivity', methods=["GET"])

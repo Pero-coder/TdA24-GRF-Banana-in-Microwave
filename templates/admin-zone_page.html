@@ -23,7 +23,19 @@
         <p style="background-color: greenyellow; padding: 10px;">Přihlášení proběhlo úspěšně</p>
 
         <br>
-        <p>Aktivity ke schválení: (TODO)</p>
+
+        <h2>Aktivity ke schválení ({{activities_count}}):</h2>
+        <div style="padding: 15px;">
+            {% for activity in activities %}
+                <a href="."}>
+                    <h2>{{activity.activityName}}</h2>
+                </a>
+                <p>{{activity.description}}</p>
+                <hr>
+                <br>
+            {% endfor %}
+            
+        </div>
     </div>
 
 </body>
