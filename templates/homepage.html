@@ -31,6 +31,10 @@
                     var uuids = data.uuids;
                     var query = "?last_search=" + encodeURIComponent(searchText) + "&";
 
+                    if (uuids.length){
+                        query += "no_results=true"
+                    }
+
                     for (var i = 0; i < uuids.length; i++) {
                         var uuid = uuids[i];
                         query += "uuid=" + uuid + "&";

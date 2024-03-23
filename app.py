@@ -53,9 +53,13 @@ def hello_world():
 def homepage():
     uuids = request.args.getlist('uuid')
     last_search = request.args.get('last_search', "")
+    no_results = request.args.get('no_results', "")
 
+    if bool(no_results):
+        found_activities = []
+        ai_generated_descriptions = []
 
-    if uuids:
+    elif uuids:
         found_activities = list(activities_db.find({"_id": {"$in": uuids}}))
         ai_generated_descriptions = list(ai_summaries_db.find({"_id": {"$in": uuids}}))
     else:
