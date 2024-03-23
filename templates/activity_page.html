@@ -6,13 +6,12 @@
     <title>Aktivita</title>
 </head>
 
-<header>
-    <a href="/">Zpět</a>
-</header>
-
 <body>
-    
-    <p>{{raw_json}}</p>
+    <div class="navbar">
+        <a href="/"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="logo"></a>
+    </div>
+
+    <h1>{{ activityName }}</h1>
 
 </body>
 </html>
