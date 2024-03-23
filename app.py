@@ -55,7 +55,7 @@ def homepage():
     last_search = request.args.get('last_search', "")
     no_results = request.args.get('no_results', "")
 
-    if bool(no_results):
+    if no_results:
         found_activities = []
         ai_generated_descriptions = []
 

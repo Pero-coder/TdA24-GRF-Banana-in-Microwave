@@ -111,7 +111,7 @@ def ai_search_activities(search_text: str) -> list[str]:
     answer = completion.choices[0].message.content
     splitted = answer.split(",")
 
-    for generated_uuid in splitted:
+    for generated_uuid in splitted.copy():
         try:
             uuid.UUID(generated_uuid, version=4)
         except ValueError:
