@@ -1,6 +1,14 @@
 @import 'https://fonts.googleapis.com/css?family=Lalezar';
 @import 'https://fonts.googleapis.com/css?family=Open+Sans';
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Lalezar";
+}
+
+p {
+    font-family: "Open Sans";
+}
+
 .form-group {
     display: flex;
     flex-direction: column;

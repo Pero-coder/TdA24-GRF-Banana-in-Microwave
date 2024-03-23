@@ -102,7 +102,10 @@ def ai_search_activities(search_text: str) -> list[str]:
         ]
     )
 
-    return completion.choices[0].message.content
+    answer = completion.choices[0].message.content
+    splitted = answer.split(",")
+
+    return splitted
 
 
 
