@@ -103,8 +103,8 @@ def ai_search_activities(search_text: str) -> list[str]:
     completion = openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": f"Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli, který má vybrat záznamy na základě nejlepší shody z tohoto listu jsonů: {all_activities}. Pokud se vyloženě nějaké neshodují, nedávej je sem."},
-            {"role": "user", "content": f"Vypiš pouze uuid záznamů (oddělených čárkou), které se nejvíce hodí pro toto konkrétní hledání: '{search_text}'"}
+            {"role": "system", "content": f"Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli, který má vybrat uuid záznamů na základě nejlepší shody z tohoto listu jsonů: {all_activities}. Pokud se vyloženě nějaké neshodují, nedávej je sem."},
+            {"role": "user", "content": f"Vypiš pouze uuid záznamů (oddělených čárkou), které se nejvíce hodí pro toto konkrétní hledání: '{search_text}'. Výsledek musí být pouze tato uuid oddělená čárkou."}
         ]
     )
 
