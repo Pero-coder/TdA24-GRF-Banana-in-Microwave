@@ -2,6 +2,7 @@ from app import activities_to_approve_db, activities_db, credentials_db, ai_summ
 import pymongo
 import bcrypt
 import models
+import uuid
 
 
 def add_activity_to_db(activity: models.ActivityModel) -> bool:
@@ -109,6 +110,12 @@ def ai_search_activities(search_text: str) -> list[str]:
 
     answer = completion.choices[0].message.content
     splitted = answer.split(",")
+
+    for generated_uuid in splitted:
+        try:
+            uuid.UUID(generated_uuid, version=4)
+        except ValueError:
+            splitted.remove(generated_uuid)
 
     return splitted
 
