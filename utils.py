@@ -64,15 +64,20 @@ def change_user_password_in_db(uuid: str, new_password: str) -> bool:
 
 def create_ai_description(activity_object: models.ActivityModel):
 
-    completion = openai_client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli"},
-            {"role": "user", "content": "Potřebuji vygenerovat shrnutí či popisek aktivity, který bude na hlavní stránce a bude ji reprezentovat. Délka musí být 3 věty. Nezahrnuj zde prosím zbytečné informace jako uuid. Klidně informace více zkrášli. Zde je JSON ve kterém najdeš informace o aktivitě: " + activity_object.model_dump_json()} 
-        ]
-    )
+    try:
+        completion = openai_client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli"},
+                {"role": "user", "content": "Potřebuji vygenerovat shrnutí či popisek aktivity, který bude na hlavní stránce a bude ji reprezentovat. Délka musí být 3 věty. Nezahrnuj zde prosím zbytečné informace jako uuid. Klidně informace více zkrášli. Zde je JSON ve kterém najdeš informace o aktivitě: " + activity_object.model_dump_json()} 
+            ]
+        )
 
-    return completion.choices[0].message.content
+        return completion.choices[0].message.content
+    
+    except:
+        return "(AI popisek chybí)"
+
 
 
 
