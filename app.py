@@ -132,6 +132,12 @@ def admin_page():
     return render_template("admin-zone_page.html")
 
 
+@app.route('/tvorba-aktivity', methods=["GET"])
+def create_activity_page():
+
+    return render_template("create-activity_page.html")
+
+
 # APIs
 
 @app.route('/api/activity', methods=["POST"])
@@ -185,6 +191,18 @@ def delete_activity(activity_uuid: str):
         return {"code": 200, "message": "Activity deleted successfully"}, 200
 
 
+
+@app.route("/api/search_ai", methods=["POST"])
+def search_activity():
+    request_json: dict = request.get_json() # {"prompt": ""}
+    
+    search_text: str|None = request_json.get("prompt")
+
+    if search_text is None or search_text == "":
+        return {"code": 400, "message": "Invalid prompt"}, 400
+
+
+    return {"uuids": utils.ai_search_activities(search_text)}, 200
 
 
 if __name__ == '__main__':

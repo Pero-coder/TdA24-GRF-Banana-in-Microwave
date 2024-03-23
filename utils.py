@@ -90,14 +90,14 @@ def get_ai_generated_description(activity_uuid: str):
 
     return found_description
 
-def ai_search_activities(search_text: str, search_quantity: int = 15) -> list[str]:
+def ai_search_activities(search_text: str) -> list[str]:
 
     all_activities = list(activities_db.find())
 
     completion = openai_client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": f"Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli, který má vybrat {search_quantity} záznamů na základě nejlepší shody z tohoto listu jsonů: {all_activities}. Počet záznamů nemusí být přesně {search_quantity}, pokud se vyloženě nějaké neshodují."},
+            {"role": "system", "content": f"Správce systému pro sdílení různých nápadů na aktivity mezi nadšenými uživateli, který má vybrat záznamy na základě nejlepší shody z tohoto listu jsonů: {all_activities}. Pokud se vyloženě nějaké neshodují, nedávej je sem."},
             {"role": "user", "content": f"Vypiš pouze uuid záznamů (oddělených čárkou), které se nejvíce hodí pro toto konkrétní hledání: '{search_text}'"}
         ]
     )
