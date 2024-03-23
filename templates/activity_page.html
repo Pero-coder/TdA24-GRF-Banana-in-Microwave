@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='activity.css')}}">
     <title>Aktivita</title>
 </head>
 
@@ -11,7 +12,112 @@
         <a href="/"><img class="logo" src="{{url_for('static', filename='logo.svg')}}" alt="logo"></a>
     </div>
 
-    <h1>{{ activityName }}</h1>
+    <div class="activity">
+        <h1>{{ activityName }}</h1>
+        <h2>{{ description }}</h2>
+        
+        <h3>Cíle aktivity:</h3>
+        {% for objective in objectives %}
+            <ul>
+                <li><p>{{ objective }}</p></li>
+            </ul>
+        {% endfor %}
+
+        <h3>Typ aktivity</h3>
+        <p>
+            {% if classStructure == "Individual" %}
+                Individuální
+            {% elif classStructure == "Group" %}
+                Skupinová
+            {% else %}
+                Všichni
+            {% endif %}
+        </p>
+
+        <h3>Minimální délka aktivity:</h3>
+        <p>{{ lengthMin }}</p>
+
+        <h3>Maximální délka aktivity:</h3>
+        <p>{{ lengthMax }}</p>
+
+        <h3>Úroveň vzdělání</h3>
+        <ul>
+            {% for level in edLevel %}
+                <li><p>
+                    {% if level == "primarySchool" %}
+                        První stupeň ZŠ
+                    {% elif level == "highSchool" %}
+                        Střední škola
+                    {% elif level == "secondarySchool" %}
+                        Druhý stupeň ZŠ
+                    {% else %}
+                        Všechny úrovně
+                    {% endif %}
+                </p></li>
+            {% endfor %}
+        </ul>
+
+        <h3>Nástroje</h3>
+        {% for tool in tools %}
+            <ul>
+                <li><p>{{ tool }}</p></li>
+            </ul>
+        {% endfor %}
+
+        <h3>Příprava doma</h3>
+        {% for prep in homePreparation %}
+            <p>{{ prep.title }}<p>
+            <ul>
+                <li>
+                    <p>Poznámka: {{ prep.note }}</p>
+                </li>
+                <li>
+                    <p>Upozornění: <i>{{ prep.warn }}</i></p>
+                </li>
+            </ul>
+        {% endfor %}
+
+        <h3>Instrukce</h3>
+        {% for instruction in instructions %}
+            <p>{{ instruction.title }}<p>
+            <ul>
+                <li>
+                    <p>Poznámka: {{ instruction.note }}</p>
+                </li>
+                <li>
+                    <p>Upozornění: <i>{{ instruction.warn }}</i></p>
+                </li>
+            </ul>
+        {% endfor %}
+
+        <h3>Agenda</h3>
+        {% for item in agenda %}
+            <p>{{ item.title }}</p>
+            <ul>
+                <li>
+                    <p>Popis: {{ item.description }}</p>
+                </li>
+                <li>
+                    <p>Čas: {{ item.duration }}min.</p>
+                </li>
+            </ul>
+        {% endfor %}
+
+        <h3>Odkazy</h3>
+        {% for link in links %}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+        {% endfor %}
+
+        <h3>Galerie</h3>
+        <div class="gallery">
+            {% for image in gallery %}
+                <p>{{ image.title }}</p>
+                {% for img in image.images %}
+                    <img src="{{ img.lowRes }}" alt="image">
+                {% endfor %}
+            {% endfor %}
+        </div>
+    </div>
 
 </body>
 </html>
