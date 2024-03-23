@@ -70,7 +70,7 @@ def aktivita_page(activity_uuid: str):
     if activity_get[1] != 200:
         return "Aktivita nebyla nalezena!", 200
 
-    return render_template("activity_page.html", raw_json=activity_get[0])
+    return render_template("activity_page.html", **activity_get[0])
 
 
 # Login page
