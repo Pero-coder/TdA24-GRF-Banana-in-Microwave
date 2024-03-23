@@ -47,23 +47,29 @@ def hello_world():
 
 # APIs
 
-@app.route('/api/activity', methods=["GET", "POST"])
+@app.route('/api/activity', methods=["POST"])
 def create_activity():
 
     if request.method == 'POST':
         request_json = request.get_json()
 
-        new_activity_object = models.NewActivity(**request_json)
+        new_activity_object = models.ActivityModel(**request_json)
         utils.add_activity_to_db(new_activity_object)
+
+        return utils.get_specific_activity(new_activity_object.uuid)
     
-    elif request.method == 'GET':
-        pass
+    else:
+        return {"code": 405, "message": "Method not allowed"}, 405
 
+@app.route('/api/activity', methods=["GET"])
+def get_all_activities():
 
-    found_activities: List[Dict[str, Any]] = list(activities_db.find())
-
-    # TODO: change to specific activity (not all)
-    return json.loads(json_util.dumps(found_activities)), 200
+    if request.method == 'GET':
+        found_activities: List[Dict[str, Any]] = list(activities_db.find())
+        return json.loads(json_util.dumps(found_activities)), 200
+    
+    else:
+        return {"code": 405, "message": "Method not allowed"}, 405
 
 
 
