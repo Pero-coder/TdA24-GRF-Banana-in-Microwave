@@ -31,7 +31,7 @@ class HomePreparation(BaseModel):
 class ActivityModel(BaseModel):
     uuid: str
     activityName: str
-    description: str
+    description: Optional[str]
     objectives: List[str]
     classStructure: str
     lengthMin: int
