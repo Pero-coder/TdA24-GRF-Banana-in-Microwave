@@ -35,7 +35,7 @@
     <div style="padding: 15px;">
         {% for activity, ai_description in activities_and_descriptions %}
             <a href="/aktivita/{{activity.uuid}}">
-                <h2>{{ loop.index }}. {{activity.activityName}}</h2>
+                <h2>{{activity.activityName}}</h2>
             </a>
             <p>{{ai_description.summary}}</p>
             <hr>
