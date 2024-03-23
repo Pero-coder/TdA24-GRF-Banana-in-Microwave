@@ -24,6 +24,7 @@ app.permanent_session_lifetime = timedelta(hours=4)  # Session expires after 4 h
 
 db = mongodb_client.project_activities_database
 activities_db = db.activities
+activities_to_approve_db = db.activities_to_approve
 credentials_db = db.credentials
 ai_summaries_db = db.ai_summaries
 
@@ -61,6 +62,17 @@ def homepage():
 def activity_empty():
     return redirect('/')
 
+@app.route('/aktivita/<string:activity_uuid>', methods=["GET"])
+def aktivita_page(activity_uuid: str):
+
+    activity_get = utils.get_specific_activity(activity_uuid)
+    
+    if activity_get[1] != 200:
+        return "Aktivita nebyla nalezena!", 200
+
+    return render_template("activity_page.html", raw_json=activity_get[0])
+
+
 # Login page
 @app.route("/login", methods=["GET", "POST"])
 def lecturer_login():
@@ -72,7 +84,6 @@ def lecturer_login():
         return render_template("login_page.html")
 
     elif request.method == "POST":
-
 
         request_json: dict = request.get_json() # {"username": "", "password": ""}
 
@@ -131,20 +142,19 @@ def create_activity():
 
         new_activity_object = models.ActivityModel(**request_json)
         
-        ai_generated_description = utils.create_ai_description(new_activity_object)
-        success_ai_generated_description = utils.add_ai_generated_description(new_activity_object.uuid, ai_generated_description)
+        #ai_generated_description = utils.create_ai_description(new_activity_object)
+        #success_ai_generated_description = utils.add_ai_generated_description(new_activity_object.uuid, ai_generated_description)
 
         success_creation = utils.add_activity_to_db(new_activity_object)
-        
 
         if not success_creation:
             return {"code": 400, "message": "Activity has wrong format"}, 400
         
-        elif not success_ai_generated_description:
-            return {"code": 500, "message": "AI failed to create description"}, 500
+        #elif not success_ai_generated_description:
+        #    return {"code": 500, "message": "AI failed to create description"}, 500
 
         else:
-            return utils.get_specific_activity(new_activity_object.uuid)
+            return new_activity_object.model_dump(), 200
     
     else:
         return {"code": 405, "message": "Method not allowed"}, 405

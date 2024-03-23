@@ -1,4 +1,4 @@
-from app import activities_db, credentials_db, ai_summaries_db, openai_client
+from app import activities_to_approve_db, activities_db, credentials_db, ai_summaries_db, openai_client
 import pymongo
 import bcrypt
 import models
@@ -9,7 +9,7 @@ def add_activity_to_db(activity: models.ActivityModel) -> bool:
         activity_json = activity.model_dump()
         activity_json["_id"] = activity.uuid
 
-        activities_db.insert_one(activity_json)
+        activities_to_approve_db.insert_one(activity_json)
         return True
     
     except Exception as e:
