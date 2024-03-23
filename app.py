@@ -31,17 +31,19 @@ openai_client = OpenAI(
   api_key=os.environ.get("OPENAI_API_KEY")
 )
 
-# request to chatgpt API
-completion = openai_client.chat.completions.create(
-    model="gpt-3.5-turbo",
-    messages=[
-        {"role": "system", "content": "Učitel Masarykovy univerzity v Brně"},
-        {"role": "user", "content": "Řekněte mi základní informace o škole"}
-    ]
-)
 
 @app.route('/')
 def hello_world():
+
+    # request to chatgpt API
+    completion = openai_client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Učitel Masarykovy univerzity v Brně"},
+            {"role": "user", "content": "Řekněte mi základní informace o škole"}
+        ]
+    )
+
     return completion.choices[0].message.content
 
 
@@ -54,9 +56,13 @@ def create_activity():
         request_json = request.get_json()
 
         new_activity_object = models.ActivityModel(**request_json)
-        utils.add_activity_to_db(new_activity_object)
+        success = utils.add_activity_to_db(new_activity_object)
 
-        return utils.get_specific_activity(new_activity_object.uuid)
+        if success:
+            return {"code": 400, "message": "Activity has wrong format"}, 400
+
+        else:
+            return utils.get_specific_activity(new_activity_object.uuid)
     
     else:
         return {"code": 405, "message": "Method not allowed"}, 405
@@ -71,7 +77,18 @@ def get_all_activities():
     else:
         return {"code": 405, "message": "Method not allowed"}, 405
 
+@app.route("/api/activity/<string:activity_uuid>", methods=["GET"])
+def get_activity(activity_uuid: str):
+    return utils.get_specific_activity(activity_uuid)
 
+@app.route("/api/activity/<string:activity_uuid>", methods=["DELETE"])
+def delete_activity(activity_uuid: str):
+    deleted = utils.delete_activity(activity_uuid)
+
+    if not deleted:
+        return {"code": 404, "message": "Activity not found"}, 404
+    else:
+        return {"code": 200, "message": "Activity deleted successfully"}, 200
 
 
 if __name__ == '__main__':

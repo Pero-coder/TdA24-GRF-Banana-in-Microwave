@@ -2,8 +2,6 @@ from app import activities_db, credentials_db
 import pymongo
 import bcrypt
 import models
-import json
-from bson import json_util
 
 
 def add_activity_to_db(activity: models.ActivityModel) -> bool:
@@ -23,11 +21,15 @@ def get_specific_activity(activity_uuid: str) -> dict:
     found_activity = activities_db.find_one({"_id": {"$eq": activity_uuid}})
 
     if found_activity is None:
-        return {"code": 404, "message": "User not found"}
+        return {"code": 404, "message": "User not found"}, 404
     else:
         
         activity_object = models.ActivityModel(**found_activity)
-        return activity_object.model_dump()
+        return activity_object.model_dump(), 200
+
+def delete_activity(activity_uuid: str) -> bool:
+    result = activities_db.delete_one({"_id": activity_uuid})
+    return result.deleted_count > 0
 
 def hash_password_bcrypt(password: str) -> str:
     hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
